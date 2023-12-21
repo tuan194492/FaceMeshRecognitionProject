@@ -33,7 +33,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
-public class MainActivity extends AppCompatActivity implements ImageAnalysis.Analyzer {
+public class MainActivity extends AppCompatActivity  {
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ImageButton record, flipCamera;
@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements ImageAnalysis.Ana
     private ImageAnalysis imageAnalysis;
     Camera camera;
     ProcessCameraProvider cameraProvider = null;
+
+    ImageAnalysis.Analyzer analyzer;
 
     int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements ImageAnalysis.Ana
 
         imageCapture = new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build();
         imageAnalysis = new ImageAnalysis.Builder().setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();
-        imageAnalysis.setAnalyzer(getExecutor(), this::analyze);
+        imageAnalysis.setAnalyzer(getExecutor(), new FaceMeshAnalyzer());
         camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalysis);
     }
 
@@ -117,11 +119,5 @@ public class MainActivity extends AppCompatActivity implements ImageAnalysis.Ana
     private void onClickRecord(View view) {
     }
 
-    @Override
-    public void analyze(@NonNull ImageProxy image) {
-        Log.d("TUAN", "Got image at " + image.getImageInfo() );
-        System.out.println("Tuan NQ" + "Got image at " + image.getImageInfo().getTimestamp());
-        image.close();
 
-    }
 }
