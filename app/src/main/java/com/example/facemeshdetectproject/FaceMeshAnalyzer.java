@@ -10,12 +10,12 @@ import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 
+import com.example.facemeshdetectproject.graphic.FaceMeshOverlay;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.common.PointF3D;
-import com.google.mlkit.vision.common.Triangle;
 import com.google.mlkit.vision.facemesh.FaceMesh;
 import com.google.mlkit.vision.facemesh.FaceMeshDetection;
 import com.google.mlkit.vision.facemesh.FaceMeshDetector;
@@ -25,6 +25,14 @@ import com.google.mlkit.vision.facemesh.FaceMeshPoint;
 import java.util.List;
 
 public class FaceMeshAnalyzer implements ImageAnalysis.Analyzer {
+
+    FaceMeshOverlay faceMeshOverlay;
+//
+    public FaceMeshAnalyzer(FaceMeshOverlay faceMeshOverlay) {
+        super();
+        this.faceMeshOverlay = faceMeshOverlay;
+    }
+
     @OptIn(markerClass = ExperimentalGetImage.class)
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
@@ -54,15 +62,16 @@ public class FaceMeshAnalyzer implements ImageAnalysis.Analyzer {
 
                                         }
                                     }
+                                    faceMeshOverlay.drawFaceMesh(faceMeshes);
                                 }
                             })
                     .addOnFailureListener(
                             new OnFailureListener() {
                                 @Override
                                 public void onFailure(Exception e) {
-                                    imageProxy.close();
                                 }
                     });
+            imageProxy.close();
         }
 
     }

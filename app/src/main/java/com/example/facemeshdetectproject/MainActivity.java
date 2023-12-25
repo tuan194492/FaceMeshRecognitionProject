@@ -1,37 +1,27 @@
 package com.example.facemeshdetectproject;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.video.Recorder;
-import androidx.camera.video.Recording;
-import androidx.camera.video.VideoCapture;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import android.content.pm.PackageManager;
-import android.graphics.Matrix;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Size;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.facemeshdetectproject.graphic.FaceMeshOverlay;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -40,6 +30,8 @@ public class MainActivity extends AppCompatActivity  {
     private PreviewView previewView;
     private ImageCapture imageCapture;
     private ImageAnalysis imageAnalysis;
+
+    private FaceMeshOverlay faceMeshOverlay;
     Camera camera;
     ProcessCameraProvider cameraProvider = null;
 
@@ -54,11 +46,11 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         record = findViewById(R.id.start_record);
         flipCamera = findViewById(R.id.flip_camera);
+        faceMeshOverlay = findViewById(R.id.face_mesh_overlay);
 
         record.setOnClickListener(this::onClickRecord);
         flipCamera.setOnClickListener(this::onClickFlipCamera);
         previewView = findViewById(R.id.preview);
-
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(() -> {
             try {
@@ -99,7 +91,7 @@ public class MainActivity extends AppCompatActivity  {
 
         imageCapture = new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build();
         imageAnalysis = new ImageAnalysis.Builder().setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();
-        imageAnalysis.setAnalyzer(getExecutor(), new FaceMeshAnalyzer());
+        imageAnalysis.setAnalyzer(getExecutor(), new FaceMeshAnalyzer(faceMeshOverlay));
         camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalysis);
     }
 
