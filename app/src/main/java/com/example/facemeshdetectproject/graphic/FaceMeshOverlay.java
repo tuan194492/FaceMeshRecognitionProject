@@ -35,9 +35,10 @@ public class FaceMeshOverlay extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         this.init();
-        for (FaceMesh rect : faceMeshList) {
-            canvas.drawRect(rect.getBoundingBox(), paint);
-            for (FaceMeshPoint faceMeshPoint : rect.getAllPoints()) {
+        for (FaceMesh facemesh : faceMeshList) {
+            canvas.scale(1.5F, 1.5F);
+            canvas.drawRect(facemesh.getBoundingBox() , paint);
+            for (FaceMeshPoint faceMeshPoint : facemesh.getAllPoints()) {
                 canvas.drawPoint(faceMeshPoint.getPosition().getX(), faceMeshPoint.getPosition().getY(), paint);
             }
 

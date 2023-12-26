@@ -11,6 +11,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -109,6 +110,10 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void onClickRecord(View view) {
+        Intent myIntent = new Intent(MainActivity.this, RegisterActivity.class);
+        myIntent.putExtra("key", "Holy shit"); //Optional parameters
+        myIntent.putExtra("faceMeshList", this.faceMeshOverlay.getFaceMeshList().size());
+        MainActivity.this.startActivity(myIntent);
     }
 
 
