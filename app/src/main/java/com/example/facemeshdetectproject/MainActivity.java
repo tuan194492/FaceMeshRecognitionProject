@@ -20,7 +20,11 @@ import android.widget.Toast;
 
 import com.example.facemeshdetectproject.graphic.FaceMeshOverlay;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.mlkit.vision.facemesh.FaceMesh;
+import com.google.mlkit.vision.facemesh.FaceMeshPoint;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
@@ -110,10 +114,27 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     private void onClickRecord(View view) {
-        Intent myIntent = new Intent(MainActivity.this, RegisterActivity.class);
-        myIntent.putExtra("key", "Holy shit"); //Optional parameters
-        myIntent.putExtra("faceMeshList", this.faceMeshOverlay.getFaceMeshList().size());
-        MainActivity.this.startActivity(myIntent);
+        List<FaceMesh> faceMeshes = this.faceMeshOverlay.getFaceMeshList();
+        ArrayList<ArrayList<Float>> faceMeshPointList = new ArrayList<>();
+        for (FaceMesh faceMesh : faceMeshes) {
+            List<FaceMeshPoint> faceMeshPoints = faceMesh.getAllPoints();
+            for (FaceMeshPoint faceMeshPoint : faceMeshPoints) {
+                float x = faceMeshPoint.getPosition().getX();
+                float y = faceMeshPoint.getPosition().getY();
+                float z = faceMeshPoint.getPosition().getZ();
+                ArrayList<Float> xyzValues = new ArrayList<>();
+                xyzValues.add(x);
+                xyzValues.add(y);
+                xyzValues.add(z);
+
+                faceMeshPointList.add(xyzValues);
+            }
+        }
+        Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("faceMeshPoints", faceMeshPointList.toString());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 
