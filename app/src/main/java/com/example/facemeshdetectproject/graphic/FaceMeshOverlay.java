@@ -2,6 +2,7 @@ package com.example.facemeshdetectproject.graphic;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -36,12 +37,19 @@ public class FaceMeshOverlay extends View {
         super.onDraw(canvas);
         this.init();
         for (FaceMesh facemesh : faceMeshList) {
-            canvas.scale(1.5F, 1.5F);
+            canvas.scale(2.5F, 2.5F);
+            paint.setColor(Color.BLACK);
             canvas.drawRect(facemesh.getBoundingBox() , paint);
-            for (FaceMeshPoint faceMeshPoint : facemesh.getAllPoints()) {
-                canvas.drawPoint(faceMeshPoint.getPosition().getX(), faceMeshPoint.getPosition().getY(), paint);
+//            for (FaceMeshPoint faceMeshPoint : facemesh.getAllPoints()) {
+//                canvas.drawPoint(faceMeshPoint.getPosition().getX(), faceMeshPoint.getPosition().getY(), paint);
+//            }
+            paint.setColor(Color.BLUE);
+            for (int i =1; i<=12; i++){
+                List<FaceMeshPoint> points = facemesh.getPoints(i);
+                for (FaceMeshPoint point : points){
+                    canvas.drawPoint(point.getPosition().getX(), point.getPosition().getY(), paint);
+                }
             }
-
         }
     }
 
