@@ -44,12 +44,16 @@ public class FaceMeshOverlay extends View {
 //                canvas.drawPoint(faceMeshPoint.getPosition().getX(), faceMeshPoint.getPosition().getY(), paint);
 //            }
             paint.setColor(Color.BLUE);
-            for (int i =1; i<=12; i++){
-                List<FaceMeshPoint> points = facemesh.getPoints(i);
-                for (FaceMeshPoint point : points){
-                    canvas.drawPoint(point.getPosition().getX(), point.getPosition().getY(), paint);
-                }
-            }
+//            for (int i =1; i<=12; i++){
+//                List<FaceMeshPoint> points = facemesh.getPoints(i);
+//                for (FaceMeshPoint point : points){
+//                    canvas.drawPoint(point.getPosition().getX(), point.getPosition().getY(), paint);
+//                }
+//            }
+            List<FaceMeshPoint> points = facemesh.getPoints(6);
+            FaceMeshPoint point = points.get(5);
+            canvas.drawPoint(point.getPosition().getX(), point.getPosition().getY(), paint);
+
         }
     }
 
