@@ -47,29 +47,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
-//    public ArrayList<FaceData> getAllFaceData() {
-//        ArrayList<FaceData> faceDataList = new ArrayList<>();
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        String[] columns = {COLUMN_ID, COLUMN_NAME, COLUMN_FACE_POINTS};
-//        Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, null);
-//
-//        if (cursor != null && cursor.moveToFirst()) {
-//            do {
-//
-//                int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
-//                String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
-//                String faceMeshPoints = cursor.getString(cursor.getColumnIndex(COLUMN_FACE_POINTS));
-//
-//                FaceData faceData = new FaceData(name, faceMeshPoints);
-//                faceDataList.add(faceData);
-//            } while (cursor.moveToNext());
-//
-//            cursor.close();
-//        }
-//
-//        db.close();
-//
-//        return faceDataList;
-//    }
+    public ArrayList<FaceData> getAllFaceData() {
+        ArrayList<FaceData> faceDataList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] columns = {COLUMN_ID, COLUMN_NAME, COLUMN_FACE_POINTS};
+        Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+
+                int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+                String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                String faceMeshPoints = cursor.getString(cursor.getColumnIndex(COLUMN_FACE_POINTS));
+
+                FaceData faceData = new FaceData(name, faceMeshPoints);
+                faceDataList.add(faceData);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        db.close();
+
+        return faceDataList;
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.facemeshdetectproject;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,10 +48,5 @@ public class RegisterActivity extends AppCompatActivity {
 
         finish();
     }
-//    private ArrayList<FaceData> getData(){
-//        DatabaseHelper dbHelper = new DatabaseHelper(this);
-//        ArrayList<FaceData> faceData = dbHelper.getAllFaceData();
-//        System.out.println("test" + faceData.toString());
-//        return faceData;
-//    }
+
 }
