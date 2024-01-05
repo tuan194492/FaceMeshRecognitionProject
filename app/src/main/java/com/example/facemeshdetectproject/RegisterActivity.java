@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText editTextName;
@@ -31,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveData();
+//                getData();
             }
         });
     }
@@ -44,4 +47,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         finish();
     }
+//    private ArrayList<FaceData> getData(){
+//        DatabaseHelper dbHelper = new DatabaseHelper(this);
+//        ArrayList<FaceData> faceData = dbHelper.getAllFaceData();
+//        System.out.println("test" + faceData.toString());
+//        return faceData;
+//    }
 }
