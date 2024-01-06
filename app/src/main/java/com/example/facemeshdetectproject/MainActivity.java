@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -116,26 +117,52 @@ public class MainActivity extends AppCompatActivity  {
     private void onClickRecord(View view) {
         List<FaceMesh> faceMeshes = this.faceMeshOverlay.getFaceMeshList();
         ArrayList<ArrayList<Float>> faceMeshPointList = new ArrayList<>();
+        ArrayList<Double> distanceList = new ArrayList<>();
+//        for (FaceMesh faceMesh : faceMeshes) {
+//            List<FaceMeshPoint> faceMeshPoints = faceMesh.getAllPoints();
+//            for (FaceMeshPoint faceMeshPoint : faceMeshPoints) {
+//                float x = faceMeshPoint.getPosition().getX();
+//                float y = faceMeshPoint.getPosition().getY();
+//                float z = faceMeshPoint.getPosition().getZ();
+//                ArrayList<Float> xyzValues = new ArrayList<>();
+//                xyzValues.add(x);
+//                xyzValues.add(y);
+//                xyzValues.add(z);
+//
+//                faceMeshPointList.add(xyzValues);
+//            }
+//        }
         for (FaceMesh faceMesh : faceMeshes) {
-            List<FaceMeshPoint> faceMeshPoints = faceMesh.getAllPoints();
-            for (FaceMeshPoint faceMeshPoint : faceMeshPoints) {
-                float x = faceMeshPoint.getPosition().getX();
-                float y = faceMeshPoint.getPosition().getY();
-                float z = faceMeshPoint.getPosition().getZ();
-                ArrayList<Float> xyzValues = new ArrayList<>();
-                xyzValues.add(x);
-                xyzValues.add(y);
-                xyzValues.add(z);
-
-                faceMeshPointList.add(xyzValues);
+            List<FaceMeshPoint> faceMeshPoints = new ArrayList<>();
+            FaceMeshPoint rootPoint = faceMesh.getPoints(12).get(0);
+            for (int i=1;i<=12;i++){
+                int len = faceMesh.getPoints(i).size();
+                faceMeshPoints.add(faceMesh.getPoints(i).get(0));
+                faceMeshPoints.add(faceMesh.getPoints(i).get(len - 1));
+            }
+            int l = faceMeshPoints.size();
+            for(int i=0; i<l;i+=2){
+                distanceList.add(this.distance(faceMeshPoints.get(i), faceMeshPoints.get(i+1)));
+                distanceList.add(this.distance(faceMeshPoints.get(i), rootPoint));
+                distanceList.add(this.distance(faceMeshPoints.get(i+1), rootPoint));
             }
         }
+        Log.d("Z", "onClickRecord: " + distanceList.toString());
         Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("faceMeshPoints", faceMeshPointList.toString());
+        bundle.putString("faceMeshPoints", distanceList.toString());
         intent.putExtras(bundle);
         startActivity(intent);
     }
+    private double distance(FaceMeshPoint point1, FaceMeshPoint point2){
+        float x1 = point1.getPosition().getX();
+        float y1 = point1.getPosition().getY();
+        float z1 = point1.getPosition().getZ();
 
+        float x2 = point2.getPosition().getX();
+        float y2 = point2.getPosition().getY();
+        float z2 = point2.getPosition().getZ();
 
+        return Math.sqrt(Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2) + Math.pow((z1-z2), 2));
+    }
 }
