@@ -32,20 +32,20 @@ public class FaceMeshAnalyzer implements ImageAnalysis.Analyzer {
 
 
     FaceMeshOverlay faceMeshOverlay;
+    FaceMeshDetector detector;
 //
 //    DatabaseHelper databaseHelper = new DatabaseHelper(this.faceMeshOverlay.getContext());
     public FaceMeshAnalyzer(FaceMeshOverlay faceMeshOverlay) {
         super();
         this.faceMeshOverlay = faceMeshOverlay;
+        FaceMeshDetectorOptions.Builder optionsBuilder = new FaceMeshDetectorOptions.Builder();
+        detector = FaceMeshDetection.getClient(optionsBuilder.build());
     }
 
     @OptIn(markerClass = ExperimentalGetImage.class)
     @Override
     public void analyze(@NonNull ImageProxy imageProxy) {
-        FaceMeshDetector detector =
-                FaceMeshDetection.getClient(new FaceMeshDetectorOptions.Builder()
-                        .setUseCase(1)
-                        .build());
+
         Image mediaImage = imageProxy.getImage();
         if (mediaImage != null) {
             InputImage image =

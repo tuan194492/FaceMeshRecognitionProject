@@ -67,10 +67,15 @@ public class FaceMeshOverlay extends View {
         this.faceMeshList.addAll(faceMeshes);
         this.invalidate();
     }
+
+    private ArrayList<FaceData> faceData;
+
     public ArrayList<FaceData> getData(){
-        DatabaseHelper dbHelper = new DatabaseHelper(this.getContext());
-        ArrayList<FaceData> faceData = dbHelper.getAllFaceData();
-        Log.d("D", "getData: " + faceData.toString());
+        if (faceData == null) {
+            DatabaseHelper dbHelper = new DatabaseHelper(this.getContext());
+            faceData = dbHelper.getAllFaceData();
+            Log.d("D", "getData: " + faceData.toString());
+        }
         return faceData;
     }
 }
